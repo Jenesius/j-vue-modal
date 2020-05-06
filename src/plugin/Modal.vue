@@ -1,9 +1,20 @@
 <template>
-    <div class = "modal" v-if = "name !== undefined">
+    <div v-if = "name !== undefined"
+
+        :class = "[
+            ...defaultMain,
+            ...customMain
+        ]"
+    >
 
             <component :is=name :key = key></component>
 
-        <div class = "modal-background" @click="close"></div>
+        <div @click="close"
+            :class = "[
+                ...defaultBack,
+                ...customBack
+            ]"
+        ></div>
     </div>
 </template>
 
@@ -18,7 +29,13 @@
             return {
                 name: undefined,
                 key: 0,
-                params: {}
+                params: {},
+
+                defaultMain: [],
+                defaultBack: [],
+
+                customMain: [],
+                customBack: [],
             };
         },
         methods:{
@@ -33,6 +50,18 @@
             },
 
         },
+        computed:{
+            arrayClassMain(){
+                let output = [];
+
+                if (typeof this.defaultMain === "string")
+
+
+
+                return output;
+            },
+            arrayClassBack(){}
+        },
         created() {
             listen({
                 open: this.open,
@@ -44,28 +73,7 @@
 </script>
 
 <style scoped>
-    .modal{
-        display: flex;
-        align-items: center;
-        justify-content: center;
 
-        position: fixed;
-        height: 100%;
-        width: 100%;
-
-        top: 0;
-        left: 0;
-        z-index: 9999;
-
-
-    }
-    .modal-background{
-        position: absolute;
-        height: 100%;
-        width: 100%;
-        z-index: -1;
-        background: rgba(62, 62, 62, 0.5);
-    }
 
 
 </style>

@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import App from './App.vue'
-import modal from "j-vue-modal";
+import modal from "../src/plugin";
 import ModalTest1 from "./components/ModalTest1";
 import ModalTest2 from "./components/ModalTest2";
 
@@ -12,8 +12,13 @@ const modals = {
 };
 
 Vue.use(modal, {
-    modals: modals
+    modals: modals,
+    style:{
+        container: "modal-test-1",
+        background: "modal-test-1-background"
+    }
 });
+
 
 
 new Vue({

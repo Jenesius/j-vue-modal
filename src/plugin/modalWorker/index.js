@@ -33,6 +33,20 @@ class ModalWorker {
 
 
     }
+
+
+    init(options){
+
+        if (options.hasOwnProperty("style")) {
+            let style = options.style;
+            if (style.hasOwnProperty("container"))
+                setClass("defaultMain", style.container);
+
+            if (style.hasOwnProperty("background"))
+                setClass("defaultBack", style.background);
+        }
+    }
+
     open(name, params = {}){
 
         let key = this._openFunModal(PRIVATE_STATE.getElem(name));
@@ -58,6 +72,24 @@ class ModalWorker {
     get name(){
         return this._name;
     }
+
+    parseConfig(config){
+
+        setClass("customMain", "");
+        setClass("customBack", "");
+        if (config !== undefined) {
+            if (config.hasOwnProperty("style")) {
+                if (config.style.hasOwnProperty("container")) {
+                    setClass("customMain", config.style.container)
+                }
+                if (config.style.hasOwnProperty("background")) {
+                    setClass("customBack", config.style.background)
+                }
+            }
+        }
+
+
+    }
 }
 
 const MODAL = new ModalWorker();
@@ -68,6 +100,14 @@ export function listen(object){
     MODAL._openFunModal = object.open;
     MODAL._closeFunModal = object.close;
     MODAL.data = object.data;
+}
+
+
+const setClass = (name, value) => {
+    let tmp = value;
+    if (typeof tmp === "string") tmp = [value];
+
+    MODAL.data[name] = tmp;
 }
 
 

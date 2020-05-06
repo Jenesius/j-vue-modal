@@ -4,10 +4,12 @@ import ModalWorker, {PRIVATE_STATE} from "./modalWorker";
 export default {
     install(Vue, options) {
 
-        //Добавяем глобальный объект дял работы с модальными окнами
-
         Vue.prototype.$modal = {
-            open  : (name, params = {}) => {
+            open  : (name, params = {}, config = undefined) => {
+
+
+                ModalWorker.parseConfig(config);
+
                 return ModalWorker.open(name, params);
             },
             close : (a) => {
@@ -24,9 +26,12 @@ export default {
             },
             get name(){
                 return ModalWorker.data.name;
-            }
+            },
         };
 
+        setTimeout(()=>{
+            ModalWorker.init(options);
+        }, 0);
 
 
 
@@ -39,5 +44,9 @@ export default {
         //Регистрируем компоненту Modal
         Vue.component("Modal", Modal);
 
+        //Добавяем глобальный объект дял работы с модальными окнами
+
+
     }
 }
+
