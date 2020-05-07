@@ -1,10 +1,15 @@
 <template>
-    <div class = "modal" v-if = "name !== undefined">
-
+    <transition :name="nameAnimation">
+    <div v-if = "name !== undefined"
+        :class = cssClassMain
+    >
             <component :is=name :key = key></component>
 
-        <div class = "modal-background" @click="close"></div>
+        <div @click="close"
+            :class = cssClassBack
+        ></div>
     </div>
+    </transition>
 </template>
 
 <script>
@@ -18,8 +23,39 @@
             return {
                 name: undefined,
                 key: 0,
-                params: {}
+                params: {},
+
+                private: {
+                    css: {
+                        class: {
+                            main: {
+                                global: [],
+                                person: [],
+                            },
+                            back: {
+                                global: [],
+                                person: [],
+                            }
+                        }
+                    },
+                    animation: {
+                        global: "",
+                        person: undefined
+                    }
+                },
             };
+        },
+        computed: {
+            cssClassMain(){
+
+                return [...this.private.css.class.main.global, ...this.private.css.class.main.person];
+            },
+            cssClassBack(){
+                return [...this.private.css.class.back.global, ...this.private.css.class.back.person];
+            },
+            nameAnimation(){
+                return (this.private.animation.person === undefined)? this.private.animation.global :this.private.animation.person;
+            }
         },
         methods:{
             close(){
@@ -32,40 +68,41 @@
                 return this.key;
             },
 
+            /**
+             * private methods
+             * */
+            setGlobalClass(name, value){
+
+
+                this.private.css.class[name].global = (typeof value === "string")? [value] : value;
+            },
+            setPersonClass(name, value){
+                this.private.css.class[name].person = (typeof value === "string")? [value] : value;
+            },
+            setAnimation(type, value){
+                this.private.animation[type] = value;
+            },
+            clearPersonConfig() {
+
+                this.setPersonClass("main", []);
+                this.setPersonClass("back", []);
+
+                this.setAnimation("person", undefined);
+            }
         },
+
         created() {
             listen({
                 open: this.open,
                 close: this.close,
-                data: this.$data
+                data: this.$data,
+                privateMethods:{
+                    setGlobalClass: this.setGlobalClass,
+                    setPersonClass: this.setPersonClass,
+                    setAnimation  : this.setAnimation,
+                    clearPersonConfig   : this.clearPersonConfig,
+                }
             })
         },
     }
 </script>
-
-<style scoped>
-    .modal{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        position: fixed;
-        height: 100%;
-        width: 100%;
-
-        top: 0;
-        left: 0;
-        z-index: 9999;
-
-
-    }
-    .modal-background{
-        position: absolute;
-        height: 100%;
-        width: 100%;
-        z-index: -1;
-        background: rgba(62, 62, 62, 0.5);
-    }
-
-
-</style>

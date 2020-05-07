@@ -1,7 +1,9 @@
 <template>
-    <div class = "test1">
-        <p class = "test1-title">{{ title }}</p>
-    </div>
+
+        <div class = "modal-a test1">
+            <p class = "test1-title">{{ title }}</p>
+        </div>
+
 </template>
 
 <script>
@@ -17,6 +19,7 @@
                 return this.$modal.params.title;
             }
         },
+
         name: "ModalTest1"
     }
 </script>
@@ -39,4 +42,8 @@
         color:#2c3e50;
         font-weight: 600;
     }
+    .modal-a{
+        transition: 1s;
+    }
+
 </style>

@@ -4,10 +4,10 @@ import ModalWorker, {PRIVATE_STATE} from "./modalWorker";
 export default {
     install(Vue, options) {
 
-        //Добавяем глобальный объект дял работы с модальными окнами
-
         Vue.prototype.$modal = {
-            open  : (name, params = {}) => {
+            open  : (name, params = {}, config = undefined) => {
+                ModalWorker.parseConfig(config);
+
                 return ModalWorker.open(name, params);
             },
             close : (a) => {
@@ -24,20 +24,24 @@ export default {
             },
             get name(){
                 return ModalWorker.data.name;
-            }
+            },
         };
 
+        //Конфигурация элемента после его создания
+        setTimeout(()=>{
+            ModalWorker.init(options);
+        }, 0);
 
 
 
-        if (!options.hasOwnProperty("modals")) {
+        if (!options.hasOwnProperty("modals"))
             console.warn("J-vue-router: please set modals in options");
-        } else {
+        else
             PRIVATE_STATE.setList(options.modals);
-        }
 
         //Регистрируем компоненту Modal
         Vue.component("Modal", Modal);
 
     }
 }
+

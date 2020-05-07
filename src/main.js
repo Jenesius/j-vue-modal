@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import App from './App.vue'
-import modal from "j-vue-modal";
+import modal from "../src/plugin";
 import ModalTest1 from "./components/ModalTest1";
 import ModalTest2 from "./components/ModalTest2";
 
@@ -12,8 +12,16 @@ const modals = {
 };
 
 Vue.use(modal, {
-    modals: modals
+    modals: modals,
+    css:{
+        class: {
+            main: "modal-main-1",
+            back: "modal-back-1",
+        },
+        animation: "zoom"
+    }
 });
+
 
 
 new Vue({

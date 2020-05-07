@@ -30,9 +30,35 @@ class ModalWorker {
         this._openFunModal  = Function;
         this._closeFunModal = Function;
         this.data = {};
-
+        this.privateMethods = {};
 
     }
+
+    init(options){
+
+        let tmp = options;
+
+        if (tmp.hasOwnProperty("css")) {
+
+            tmp = options.css;
+            if (tmp.hasOwnProperty("class")) {
+                tmp = tmp.class;
+                if(tmp.hasOwnProperty("main"))
+                    this.privateMethods.setGlobalClass("main", tmp.main);
+
+                if(tmp.hasOwnProperty("back"))
+                    this.privateMethods.setGlobalClass("back", tmp.back);
+            }
+
+
+            tmp = options.css;
+            if (tmp.hasOwnProperty("animation")) {
+                this.privateMethods.setAnimation("global", tmp.animation);
+            }
+
+        }
+    }
+
     open(name, params = {}){
 
         let key = this._openFunModal(PRIVATE_STATE.getElem(name));
@@ -58,6 +84,40 @@ class ModalWorker {
     get name(){
         return this._name;
     }
+    parseConfig(config){
+
+        MODAL.privateMethods.clearPersonConfig();
+
+        if (config === undefined) return;
+
+        let tmp = config;
+
+        if (tmp.hasOwnProperty("css")) {
+
+            tmp = config.css;
+            if(tmp.hasOwnProperty("class")){
+
+                tmp = tmp.class;
+                if (tmp.hasOwnProperty("main")) {
+                    this.privateMethods.setPersonClass("main", tmp.main);
+                }
+
+                if (tmp.hasOwnProperty("back")) {
+                    this.privateMethods.setPersonClass("back", tmp.back);
+                }
+            }
+
+
+            tmp = config.css;
+            if (tmp.hasOwnProperty("animation")) {
+                this.privateMethods.setAnimation("person", tmp.animation);
+            }
+
+        }
+
+    }
+
+
 }
 
 const MODAL = new ModalWorker();
@@ -68,7 +128,7 @@ export function listen(object){
     MODAL._openFunModal = object.open;
     MODAL._closeFunModal = object.close;
     MODAL.data = object.data;
+    MODAL.privateMethods = object.privateMethods;
 }
-
 
 
