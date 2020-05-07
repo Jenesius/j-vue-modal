@@ -30,20 +30,32 @@ class ModalWorker {
         this._openFunModal  = Function;
         this._closeFunModal = Function;
         this.data = {};
-
+        this.privateMethods = {};
 
     }
 
-
     init(options){
 
-        if (options.hasOwnProperty("style")) {
-            let style = options.style;
-            if (style.hasOwnProperty("container"))
-                setClass("defaultMain", style.container);
+        let tmp = options;
 
-            if (style.hasOwnProperty("background"))
-                setClass("defaultBack", style.background);
+        if (tmp.hasOwnProperty("css")) {
+
+            tmp = options.css;
+            if (tmp.hasOwnProperty("class")) {
+                tmp = tmp.class;
+                if(tmp.hasOwnProperty("main"))
+                    this.privateMethods.setGlobalClass("main", tmp.main);
+
+                if(tmp.hasOwnProperty("back"))
+                    this.privateMethods.setGlobalClass("back", tmp.back);
+            }
+
+
+            tmp = options.css;
+            if (tmp.hasOwnProperty("animation")) {
+                this.privateMethods.setAnimation("global", tmp.animation);
+            }
+
         }
     }
 
@@ -72,24 +84,40 @@ class ModalWorker {
     get name(){
         return this._name;
     }
-
     parseConfig(config){
 
-        setClass("customMain", "");
-        setClass("customBack", "");
-        if (config !== undefined) {
-            if (config.hasOwnProperty("style")) {
-                if (config.style.hasOwnProperty("container")) {
-                    setClass("customMain", config.style.container)
+        MODAL.privateMethods.clearPersonConfig();
+
+        if (config === undefined) return;
+
+        let tmp = config;
+
+        if (tmp.hasOwnProperty("css")) {
+
+            tmp = config.css;
+            if(tmp.hasOwnProperty("class")){
+
+                tmp = tmp.class;
+                if (tmp.hasOwnProperty("main")) {
+                    this.privateMethods.setPersonClass("main", tmp.main);
                 }
-                if (config.style.hasOwnProperty("background")) {
-                    setClass("customBack", config.style.background)
+
+                if (tmp.hasOwnProperty("back")) {
+                    this.privateMethods.setPersonClass("back", tmp.back);
                 }
             }
+
+
+            tmp = config.css;
+            if (tmp.hasOwnProperty("animation")) {
+                this.privateMethods.setAnimation("person", tmp.animation);
+            }
+
         }
 
-
     }
+
+
 }
 
 const MODAL = new ModalWorker();
@@ -100,15 +128,7 @@ export function listen(object){
     MODAL._openFunModal = object.open;
     MODAL._closeFunModal = object.close;
     MODAL.data = object.data;
+    MODAL.privateMethods = object.privateMethods;
 }
-
-
-const setClass = (name, value) => {
-    let tmp = value;
-    if (typeof tmp === "string") tmp = [value];
-
-    MODAL.data[name] = tmp;
-}
-
 
 

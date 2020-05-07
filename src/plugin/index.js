@@ -6,8 +6,6 @@ export default {
 
         Vue.prototype.$modal = {
             open  : (name, params = {}, config = undefined) => {
-
-
                 ModalWorker.parseConfig(config);
 
                 return ModalWorker.open(name, params);
@@ -29,23 +27,20 @@ export default {
             },
         };
 
+        //Конфигурация элемента после его создания
         setTimeout(()=>{
             ModalWorker.init(options);
         }, 0);
 
 
 
-        if (!options.hasOwnProperty("modals")) {
+        if (!options.hasOwnProperty("modals"))
             console.warn("J-vue-router: please set modals in options");
-        } else {
+        else
             PRIVATE_STATE.setList(options.modals);
-        }
 
         //Регистрируем компоненту Modal
         Vue.component("Modal", Modal);
-
-        //Добавяем глобальный объект дял работы с модальными окнами
-
 
     }
 }

@@ -1,21 +1,15 @@
 <template>
+    <transition :name="nameAnimation">
     <div v-if = "name !== undefined"
-
-        :class = "[
-            ...defaultMain,
-            ...customMain
-        ]"
+        :class = cssClassMain
     >
-
             <component :is=name :key = key></component>
 
         <div @click="close"
-            :class = "[
-                ...defaultBack,
-                ...customBack
-            ]"
+            :class = cssClassBack
         ></div>
     </div>
+    </transition>
 </template>
 
 <script>
@@ -31,12 +25,37 @@
                 key: 0,
                 params: {},
 
-                defaultMain: [],
-                defaultBack: [],
-
-                customMain: [],
-                customBack: [],
+                private: {
+                    css: {
+                        class: {
+                            main: {
+                                global: [],
+                                person: [],
+                            },
+                            back: {
+                                global: [],
+                                person: [],
+                            }
+                        }
+                    },
+                    animation: {
+                        global: "",
+                        person: undefined
+                    }
+                },
             };
+        },
+        computed: {
+            cssClassMain(){
+
+                return [...this.private.css.class.main.global, ...this.private.css.class.main.person];
+            },
+            cssClassBack(){
+                return [...this.private.css.class.back.global, ...this.private.css.class.back.person];
+            },
+            nameAnimation(){
+                return (this.private.animation.person === undefined)? this.private.animation.global :this.private.animation.person;
+            }
         },
         methods:{
             close(){
@@ -49,31 +68,41 @@
                 return this.key;
             },
 
-        },
-        computed:{
-            arrayClassMain(){
-                let output = [];
-
-                if (typeof this.defaultMain === "string")
+            /**
+             * private methods
+             * */
+            setGlobalClass(name, value){
 
 
-
-                return output;
+                this.private.css.class[name].global = (typeof value === "string")? [value] : value;
             },
-            arrayClassBack(){}
+            setPersonClass(name, value){
+                this.private.css.class[name].person = (typeof value === "string")? [value] : value;
+            },
+            setAnimation(type, value){
+                this.private.animation[type] = value;
+            },
+            clearPersonConfig() {
+
+                this.setPersonClass("main", []);
+                this.setPersonClass("back", []);
+
+                this.setAnimation("person", undefined);
+            }
         },
+
         created() {
             listen({
                 open: this.open,
                 close: this.close,
-                data: this.$data
+                data: this.$data,
+                privateMethods:{
+                    setGlobalClass: this.setGlobalClass,
+                    setPersonClass: this.setPersonClass,
+                    setAnimation  : this.setAnimation,
+                    clearPersonConfig   : this.clearPersonConfig,
+                }
             })
         },
     }
 </script>
-
-<style scoped>
-
-
-
-</style>

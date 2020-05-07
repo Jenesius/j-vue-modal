@@ -13,9 +13,12 @@ const modals = {
 
 Vue.use(modal, {
     modals: modals,
-    style:{
-        container: "modal-test-1",
-        background: "modal-test-1-background"
+    css:{
+        class: {
+            main: "modal-main-1",
+            back: "modal-back-1",
+        },
+        animation: "zoom"
     }
 });
 

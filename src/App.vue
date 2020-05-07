@@ -19,30 +19,36 @@ export default {
     methods:{
         open1(){
             this.$modal.open("ModalTest1", {
-            title: "test0",
-            customClassBack: ["test-custom-back"]
-        });
+                title: "test0",
+            });
       },
       open2(){
         this.$modal.open("ModalTest1", {
           title: "test0",
           customClassBack: ["test-custom-back"]
         }, {
-          style: {
-            container: "style-2-c",
-            background: "style-2-b"
-          }
+          css: {
+              class: {
+                main: "test-2-main",
+                back: ""
+              },
+            animation: "fade"
+          },
+
         });
       },
       open3(){
-        this.$modal.open("ModalTest1", {
-          title: "test0",
-          customClassBack: ["test-custom-back"]
-        }, {
-          style: {
-            background: "style-3-b"
-          }
-        });
+        this.$modal.open("ModalTest1",
+                {
+            title: "test0",
+          }, {
+            css: {
+              class: {
+                main: "test-3-main",
+                back: "test-3-back"
+              }
+            }
+          });
       }
     },
 
@@ -61,7 +67,7 @@ export default {
 }
 
 
-.modal-test-1{
+.modal-main-1{
   display: flex;
   align-items: center;
   justify-content: center;
@@ -76,20 +82,29 @@ export default {
 
 
 }
-.modal-test-1-background{
+.modal-back-1{
   position: absolute;
   height: 100%;
   width: 100%;
   z-index: -1;
   background: rgba(62, 62, 62, 0.5);
 }
-.style-2-b{
-  background-color: red;
+.test-2-main{
+  align-items: flex-end;
 }
-  .style-2-c{
-    align-items: flex-end;
+.test-3-main{
+  align-items: flex-start;
+  justify-content: flex-end;
+}
+.test-3-back{
+  background: rgba(99, 150, 82, 0.5);
+}
+
+.fade-enter .modal-a {
+  transform: translateY(100px);
+}
+  .zoom-enter .test1{
+    transform: scale(0.8)
   }
-.style-3-b{
-  background-color: blue;
-}
+
 </style>
