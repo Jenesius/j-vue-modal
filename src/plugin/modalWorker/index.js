@@ -16,12 +16,22 @@
 export const PRIVATE_STATE = {
     modalList: {},
     setList(list){
+
+        for( let key in list) {
+            if (!list[key].hasOwnProperty("component")) {
+                list[key] = {
+                    component: list[key]
+                }
+            }
+        }
+
         this.modalList = list;
     },
     getElem(x){
         return this.modalList[x];
     }
 };
+
 
 class ModalWorker {
     constructor() {
@@ -50,7 +60,6 @@ class ModalWorker {
                     this.privateMethods.setGlobalClass("back", tmp.back);
             }
 
-
             tmp = options.css;
             if (tmp.hasOwnProperty("animation")) {
                 this.privateMethods.setAnimation("global", tmp.animation);
@@ -59,9 +68,24 @@ class ModalWorker {
         }
     }
 
-    open(name, params = {}){
+    open(name, params = {}, config = undefined){
 
-        let key = this._openFunModal(PRIVATE_STATE.getElem(name));
+        /*
+        * в текущем open не передаётся config, используем дофолтный, который у самого элемента
+        * */
+
+        if (config === undefined) {
+            if (PRIVATE_STATE.getElem(name).hasOwnProperty("config")){
+                this.parseConfig(PRIVATE_STATE.getElem(name).config)
+            } else {
+                MODAL.privateMethods.clearPersonConfig();
+            }
+        } else {
+            this.parseConfig(config);
+        }
+
+
+        let key = this._openFunModal(PRIVATE_STATE.getElem(name).component);
 
         this._name   = name;
         this.data.params = params;

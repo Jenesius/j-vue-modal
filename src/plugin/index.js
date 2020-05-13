@@ -6,9 +6,8 @@ export default {
 
         Vue.prototype.$modal = {
             open  : (name, params = {}, config = undefined) => {
-                ModalWorker.parseConfig(config);
 
-                return ModalWorker.open(name, params);
+                return ModalWorker.open(name, params, config);
             },
             close : (a) => {
                 ModalWorker.close(a);
