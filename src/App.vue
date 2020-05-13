@@ -8,6 +8,11 @@
 
     <button @click = "open3">open test3</button>
 
+    <br>
+    <br>
+
+    <button @click= "open4">open TEST3</button>
+
   </div>
 </template>
 
@@ -17,38 +22,17 @@
 export default {
     name: 'App',
     methods:{
-        open1(){
-            this.$modal.open("ModalTest1", {
-                title: "test0",
-            });
+      open1(){
+        this.$modal.open("Modal-1");
       },
       open2(){
-        this.$modal.open("ModalTest1", {
-          title: "test0",
-          customClassBack: ["test-custom-back"]
-        }, {
-          css: {
-              class: {
-                main: "test-2-main",
-                back: ""
-              },
-            animation: "fade"
-          },
-
-        });
+        this.$modal.open("Modal-2");
       },
       open3(){
-        this.$modal.open("ModalTest1",
-                {
-            title: "test0",
-          }, {
-            css: {
-              class: {
-                main: "test-3-main",
-                back: "test-3-back"
-              }
-            }
-          });
+        this.$modal.open("Modal-3");
+      },
+      open4(){
+        this.$modal.open("Modal-4");
       }
     },
 
@@ -67,44 +51,47 @@ export default {
 }
 
 
-.modal-main-1{
+.modal-main-0{
   display: flex;
   align-items: center;
   justify-content: center;
 
-  position: fixed;
   height: 100%;
   width: 100%;
 
+  position: fixed;
   top: 0;
   left: 0;
   z-index: 9999;
-
-
 }
-.modal-back-1{
+.modal-back-0{
   position: absolute;
+  z-index: -1;
+
   height: 100%;
   width: 100%;
-  z-index: -1;
+
   background: rgba(62, 62, 62, 0.5);
 }
-.test-2-main{
-  align-items: flex-end;
-}
-.test-3-main{
-  align-items: flex-start;
-  justify-content: flex-end;
-}
-.test-3-back{
-  background: rgba(99, 150, 82, 0.5);
+
+
+.rotate-enter .widget-modal{
+  transform: rotate(90deg);
 }
 
-.fade-enter .modal-a {
+.translate-enter .widget-modal{
+  transform: translateY(-100px);
+}
+
+.back-translate-enter .widget-modal{
   transform: translateY(100px);
 }
-  .zoom-enter .test1{
-    transform: scale(0.8)
+.zoom-enter .widget-modal{
+  transform: scale(18)
+}
+
+  .widget-modal{
+    transition: 1s;
   }
 
 </style>
