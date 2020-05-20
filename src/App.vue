@@ -18,6 +18,7 @@
 
 <script>
 
+  import jsImport from "./assets/jsImport";
 
 export default {
     name: 'App',
@@ -36,7 +37,9 @@ export default {
       }
     },
 
-
+    mounted() {
+      jsImport();
+    }
 }
 </script>
 
