@@ -1,30 +1,33 @@
 import Modal from "./Modal";
 import ModalWorker, {PRIVATE_STATE} from "./modalWorker";
 
+export const modal = {
+    open  : (name, params = {}, config = undefined) => {
+
+        return ModalWorker.open(name, params, config);
+    },
+    close : (a) => {
+        ModalWorker.close(a);
+    },
+    update: (params = {}) => {
+        ModalWorker.data.params = params;
+    },
+    get params(){
+        return ModalWorker.data.params;
+    },
+    get key(){
+        return ModalWorker.data.key;
+    },
+    get name(){
+        return ModalWorker.data.name;
+    },
+};
+
+
 export default {
     install(Vue, options) {
 
-        Vue.prototype.$modal = {
-            open  : (name, params = {}, config = undefined) => {
-
-                return ModalWorker.open(name, params, config);
-            },
-            close : (a) => {
-                ModalWorker.close(a);
-            },
-            update: (params = {}) => {
-                ModalWorker.data.params = params;
-            },
-            get params(){
-                return ModalWorker.data.params;
-            },
-            get key(){
-                return ModalWorker.data.key;
-            },
-            get name(){
-                return ModalWorker.data.name;
-            },
-        };
+        Vue.prototype.$modal = modal;
 
         //Конфигурация элемента после его создания
         setTimeout(()=>{
@@ -43,4 +46,5 @@ export default {
 
     }
 }
+
 
